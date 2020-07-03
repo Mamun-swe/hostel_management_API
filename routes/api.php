@@ -24,4 +24,5 @@ Route::group(['prefix' => 'building'], function () {
 // Student API's
 Route::group(['prefix' => 'student'], function () {
     Route::apiResource('/student','api\Student\StudentController');
+    Route::apiResource('/payment','api\Payment\PaymentController');
 });
