@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// Middleware
+//// admin
 
 // Authentication API's
 Route::group(['prefix' => 'auth'], function () {
@@ -15,7 +17,7 @@ Route::group(['prefix' => 'auth'], function () {
 
 
 // Building API's
-Route::group(['prefix' => 'building'], function () {
+Route::group(['prefix' => 'building', 'middleware' => ['admin']], function () {
     Route::apiResource('/building','api\Building\BuildingController');
     Route::apiResource('/floor','api\Building\FloorController');
     Route::apiResource('/room','api\Building\RoomController');
@@ -25,4 +27,9 @@ Route::group(['prefix' => 'building'], function () {
 Route::group(['prefix' => 'student'], function () {
     Route::apiResource('/student','api\Student\StudentController');
     Route::apiResource('/payment','api\Payment\PaymentController');
+});
+
+// Guest API's
+Route::group(['prefix' => 'guest'], function () {
+    Route::apiResource('/guest','api\Guest\GuestController');
 });

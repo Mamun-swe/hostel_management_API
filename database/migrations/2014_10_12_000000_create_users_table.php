@@ -20,10 +20,11 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->enum('type', ['super_admin', 'admin', 'employee']);
             $table->string('phone');
-            $table->string('nid-birth');
-            $table->string('image');
+            $table->string('nid_birth');
+            $table->string('image')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('api_token',100)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

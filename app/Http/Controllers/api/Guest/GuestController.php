@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\api\Student;
+namespace App\Http\Controllers\api\Guest;
 
-use App\Models\Student;
+use App\Models\Guest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Validator;
 
-class StudentController extends Controller
+class GuestController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +15,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::paginate(10);
-        return response()->json($students);
+        $guests = Guest::paginate(10);
+        return response()->json($guests);
     }
 
     /**
@@ -30,13 +29,13 @@ class StudentController extends Controller
     {
         $valid = false;
         $rules = [
-            'room_id' => 'required',
-            'admin_id' => 'required',
+            'student_id' => 'required',
             'name' => 'required',
-            'own_mobile_number' => 'required|unique:students|regex:/(01)[0-9]{9}/',
-            'parents_mobile_number' => 'required|regex:/(01)[0-9]{9}/',
-            'admission_date' => 'required',
-            'status' => 'required',
+            'phone_number' => 'required|regex:/(01)[0-9]{9}/',
+            'relation' => 'required',
+            'check_in_date' => 'required',
+            'check_out_date' => 'required',
+            'daily_amount' => 'required',
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -45,16 +44,16 @@ class StudentController extends Controller
             ], 422);
         }else{
             $form_data = array(
-                'room_id' => $request->room_id,
-                'admin_id' => $request->admin_id,
+                'student_id' => $request->student_id,
                 'name' => $request->name,
-                'own_mobile_number' => $request->own_mobile_number,
-                'parents_mobile_number' => $request->parents_mobile_number,
-                'admission_date' => $request->admission_date,
-                'status' => $request->status,
+                'phone_number' => $request->phone_number,
+                'relation' => $request->relation,
+                'check_in_date' => $request->check_in_date,
+                'check_out_date' => $request->check_out_date,
+                'daily_amount' => $request->daily_amount,
             );
 
-            Student::create($form_data);
+            Guest::create($form_data);
             $valid = true;
             
             if($valid == true) {
@@ -74,8 +73,9 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        $student = Student::find($id);
-        return response()->json($student);
+        $guest = Guest::join('students', 'students.id', '=', 'guests.student_id')
+                    ->where('guests.id', '=', $id)->first();
+        return response()->json($guest);
     }
 
     /**
@@ -89,13 +89,13 @@ class StudentController extends Controller
     {
         $valid = false;
         $rules = [
-            'room_id' => 'required',
-            'admin_id' => 'required',
+            'student_id' => 'required',
             'name' => 'required',
-            'own_mobile_number' => 'required|unique:students|regex:/(01)[0-9]{9}/',
-            'parents_mobile_number' => 'required|regex:/(01)[0-9]{9}/',
-            'admission_date' => 'required',
-            'status' => 'required',
+            'phone_number' => 'required|regex:/(01)[0-9]{9}/',
+            'relation' => 'required',
+            'check_in_date' => 'required',
+            'check_out_date' => 'required',
+            'daily_amount' => 'required',
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -104,16 +104,16 @@ class StudentController extends Controller
             ], 422);
         }else{
             $form_data = array(
-                'room_id' => $request->room_id,
-                'admin_id' => $request->admin_id,
+                'student_id' => $request->student_id,
                 'name' => $request->name,
-                'own_mobile_number' => $request->own_mobile_number,
-                'parents_mobile_number' => $request->parents_mobile_number,
-                'admission_date' => $request->admission_date,
-                'status' => $request->status,
+                'phone_number' => $request->phone_number,
+                'relation' => $request->relation,
+                'check_in_date' => $request->check_in_date,
+                'check_out_date' => $request->check_out_date,
+                'daily_amount' => $request->daily_amount,
             );
 
-            $record = Student::find($id);
+            $record = Guest::find($id);
             $record->update($request->all());
             $valid = true;
             
@@ -136,7 +136,7 @@ class StudentController extends Controller
     {
         $valid = false;
 
-        Student::where('id', '=', $id)->delete();
+        Guest::where('id', '=', $id)->delete();
         $valid = true;
             
         if($valid == true) {

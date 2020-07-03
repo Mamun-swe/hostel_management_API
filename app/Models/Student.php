@@ -12,8 +12,6 @@ class Student extends Model
         'name', 
         'own_mobile_number', 
         'parents_mobile_number', 
-        'advance_amount', 
-        'due_amount',
         'admission_date', 
         'status'
     ];
