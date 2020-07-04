@@ -24,12 +24,12 @@ Route::group(['prefix' => 'building', 'middleware' => ['admin']], function () {
 });
 
 // Student API's
-Route::group(['prefix' => 'student'], function () {
+Route::group(['prefix' => 'student', 'middleware' => ['admin']], function () {
     Route::apiResource('/student','api\Student\StudentController');
     Route::apiResource('/payment','api\Payment\PaymentController');
 });
 
 // Guest API's
-Route::group(['prefix' => 'guest'], function () {
+Route::group(['prefix' => 'guest', 'middleware' => ['admin']], function () {
     Route::apiResource('/guest','api\Guest\GuestController');
 });

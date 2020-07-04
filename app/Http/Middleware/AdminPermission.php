@@ -24,13 +24,25 @@ class AdminPermission
             $accountType = $tokenExplode[0];
             $token = $tokenExplode[1];
             $user = User::where('api_token', '=', $token)->first();
-            if($user && $user->type == $accountType && $accountType == 'super_admin'){
+            if($user && $user->type == $accountType && $accountType == 'admin'){
+                if($method == 'GET' | $method == 'POST' | $method == 'PUT'){
+                    $valid = true;
+                }else{
+                    $valid = false;
+                }
+            }elseif ($user && $user->type == $accountType && $accountType == 'super_admin'){
+                if($method == 'GET' | $method == 'POST' | $method == 'PUT' | $method == 'DELETE'){
+                    $valid = true;
+                }else{
+                    $valid = false;
+                }
+            }elseif ($user && $user->type == $accountType && $accountType == 'employee'){
                 if($method == 'GET' | $method == 'POST'){
                     $valid = true;
                 }else{
                     $valid = false;
                 }
-            }else{
+            } else{
                 $valid = false;
             }
         }else{
