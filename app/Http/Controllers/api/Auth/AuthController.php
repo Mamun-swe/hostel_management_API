@@ -115,8 +115,17 @@ class AuthController extends Controller
 
 
     // Me
-    public function Me($id){
-        return response()->json($id);
+    public function Me(Request $request){
+        $tokenExplode = explode(".", $request->bearerToken());
+        $token = $tokenExplode[1];
+        $user = User::where('api_token', '=', $token)->first();
+            if($user) {
+                return response()->json($user);
+            } else {
+                return response()->json([
+                    'message' => 'User not found',
+                ], 204);
+            }
     }
 
 

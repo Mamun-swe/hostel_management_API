@@ -11,7 +11,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/login','api\Auth\AuthController@Login');
     Route::post('/register','api\Auth\AuthController@Register');
     Route::post('/reset','api\Auth\AuthController@Reset');
-    Route::get('/me/{id}','api\Auth\AuthController@Me');
+    Route::get('/me','api\Auth\AuthController@Me')->middleware('admin');
     Route::post('/logout','api\Auth\AuthController@Logout');
 });
 
